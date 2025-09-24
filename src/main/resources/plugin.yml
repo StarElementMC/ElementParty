@@ -1,0 +1,6 @@
+name: ElementParty
+main: net.starelement.ElementParty
+version: 1.0.0
+api: 1.0.0
+load: STARTUP
+author: StarElement Dev
