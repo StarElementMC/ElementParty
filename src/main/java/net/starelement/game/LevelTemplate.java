@@ -9,8 +9,8 @@ public class LevelTemplate {
 
     private File file;
     private Type type;
-    private static final String LEVEL_PATH = "worlds/";
-    private static final String TEMPLATE_PATH = "plugins/level_templates/";
+    public static final String LEVEL_PATH = "worlds/";
+    public static final String TEMPLATE_PATH = "plugins/level_templates/";
 
     public LevelTemplate(File file) {
         if (!file.exists()) {
