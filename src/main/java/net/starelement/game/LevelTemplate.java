@@ -4,6 +4,7 @@ import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.Utils;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class LevelTemplate {
     public Level install() {
         try {
             if (type == Type.DIR) {
-                Utils.copyFile(file, new File(LEVEL_PATH + "/" + file.getName()));
+                FileUtils.copyDirectory(file, new File(LEVEL_PATH + file.getName()));
             } else if (type == Type.ZIP) {
                 //TODO 解压zip
             }
