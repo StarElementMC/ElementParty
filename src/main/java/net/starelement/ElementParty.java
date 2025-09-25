@@ -2,6 +2,7 @@ package net.starelement;
 
 import cn.nukkit.plugin.PluginBase;
 import net.starelement.cmds.PartyCommand;
+import net.starelement.game.GameManager;
 import net.starelement.game.LevelTemplate;
 
 import java.io.File;
@@ -10,6 +11,7 @@ public class ElementParty extends PluginBase {
 
     @Override
     public void onLoad() {
+        GameManager.getInstance().plugin = this;
         File lt = new File(LevelTemplate.TEMPLATE_PATH);
         if (!lt.exists()) lt.mkdir();
         getServer().getCommandMap().register("element", new PartyCommand("ep"));

@@ -3,6 +3,9 @@ package net.starelement.game;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Level;
+import cn.nukkit.utils.Logger;
+import net.starelement.ElementParty;
+import net.starelement.task.ReadyTask;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +18,8 @@ public class GameManager {
     private HashSet<PartyPlayer> players = new HashSet<>();
     private boolean started = false;
     private HashMap<PartyGame, Level> levels = new HashMap<>();
+
+    public ElementParty plugin;
 
     private GameManager() {}
 
@@ -30,8 +35,16 @@ public class GameManager {
         return currentGame;
     }
 
+    public Logger getLogger() {
+        return plugin.getLogger();
+    }
+
+    public ElementParty getPlugin() {
+        return plugin;
+    }
+
     public void startParty() {
-        if (started) throw new IllegalStateException("Party already started");
+//        if (started) throw new IllegalStateException("Party already started");
         started = true;
         Server server = Server.getInstance();
         server.getLogger().info("Start");
@@ -47,6 +60,8 @@ public class GameManager {
                 throw new RuntimeException("Level not installed " + template);
             }
         }
+        ReadyTask ready = new ReadyTask();
+        server.getScheduler().scheduleAsyncTask(plugin, ready);
     }
 
 }
