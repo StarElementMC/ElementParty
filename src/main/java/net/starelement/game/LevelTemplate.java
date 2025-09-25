@@ -1,5 +1,8 @@
 package net.starelement.game;
 
+import cn.nukkit.Server;
+import cn.nukkit.level.Level;
+import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.Utils;
 
 import java.io.File;
@@ -24,12 +27,21 @@ public class LevelTemplate {
         this(new File(TEMPLATE_PATH + name));
     }
 
-    public void install() throws IOException {
-        if (type == Type.DIR) {
-            Utils.copyFile(file, new File(LEVEL_PATH + "/" + file.getName()));
-        } else if (type == Type.ZIP) {
-
+    public Level install() {
+        try {
+            if (type == Type.DIR) {
+                Utils.copyFile(file, new File(LEVEL_PATH + "/" + file.getName()));
+            } else if (type == Type.ZIP) {
+                //TODO 解压zip
+            }
+        } catch (Exception e) {
+            MainLogger.getLogger().logException(e);
+            return null;
         }
+        if (Server.getInstance().loadLevel(file.getName())) {
+            return Server.getInstance().getLevelByName(file.getName());
+        }
+        return null;
     }
 
     public enum Type {
