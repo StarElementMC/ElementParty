@@ -5,6 +5,7 @@ import cn.nukkit.Player;
 public class PartyPlayer {
 
     private Player player;
+    private boolean active = true;
 
     protected PartyPlayer(Player player) {
         if (player == null) {
@@ -19,6 +20,15 @@ public class PartyPlayer {
 
     public boolean isOnline() {
         return player.isOnline();
+    }
+
+    public void lose() {
+        active = false;
+        player.sendTitle("你被淘汰了");
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
 }

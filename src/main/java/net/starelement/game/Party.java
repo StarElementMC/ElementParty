@@ -62,7 +62,7 @@ public class Party {
         return gameList;
     }
 
-    public PartyGame nextGame() {
+    protected PartyGame nextGame() {
         currentGame = gameList.get(index);
         index++;
         return currentGame;
@@ -75,6 +75,26 @@ public class Party {
     protected void putLevel(PartyGame game, Level level) {
         levels.put(game, level);
         game.setLevel(level);
+    }
+
+    public synchronized void start() {
+        PartyGame game = nextGame();
+        game.party = this;
+        try {
+            for (int i = 0; i < 3; i++) {
+                sendMessage("3秒后传送");
+                Thread.sleep(3000);
+                game.join(players);
+                game.start();
+                wait();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public synchronized void next() {
+        notifyAll();
     }
 
 }
