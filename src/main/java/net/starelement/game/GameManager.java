@@ -7,17 +7,13 @@ import cn.nukkit.utils.Logger;
 import net.starelement.ElementParty;
 import net.starelement.task.ReadyTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class GameManager {
 
     private static GameManager instance = new GameManager();
     private HashMap<String, PartyGame> games = new HashMap<>();
-    private PartyGame currentGame;
-    private HashSet<PartyPlayer> players = new HashSet<>();
-    private boolean started = false;
-    private HashMap<PartyGame, Level> levels = new HashMap<>();
 
     public ElementParty plugin;
 
@@ -31,10 +27,6 @@ public class GameManager {
         games.put(game.getName(), game);
     }
 
-    public PartyGame getCurrentGame() {
-        return currentGame;
-    }
-
     public Logger getLogger() {
         return plugin.getLogger();
     }
@@ -45,23 +37,35 @@ public class GameManager {
 
     public void startParty() {
 //        if (started) throw new IllegalStateException("Party already started");
-        started = true;
         Server server = Server.getInstance();
         server.getLogger().info("Start");
+        ArrayList<PartyPlayer> players = new ArrayList<>();
         for (Player player : server.getOnlinePlayers().values()) {
             players.add(new PartyPlayer(player));
         }
-        for (PartyGame game : games.values()) {
+        ArrayList<PartyGame> gameList = selectGames();
+        Party party = new Party(gameList, players);
+        for (PartyGame game : gameList) {
             LevelTemplate template = game.getRandomLevel();
             Level level = template.install();
             if (level != null) {
-                levels.put(game, level);
+                party.putLevel(game, level);
             } else {
                 throw new RuntimeException("Level not installed " + template);
             }
         }
-        ReadyTask ready = new ReadyTask();
+        if (gameList.isEmpty()) return;
+//        if (party.getPlayers().isEmpty()) return;
+        ReadyTask ready = new ReadyTask(party);
         server.getScheduler().scheduleAsyncTask(plugin, ready);
+    }
+
+    /**
+     * 在关卡列表中选择要进行的关卡
+     * 目前关卡较少就直接复制games
+     */
+    private ArrayList<PartyGame> selectGames() {
+        return new ArrayList<>(games.values());
     }
 
 }
