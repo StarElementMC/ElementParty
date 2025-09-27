@@ -15,6 +15,7 @@ public class LevelTemplate {
     private Type type;
     public static final String LEVEL_PATH = "worlds/";
     public static final String TEMPLATE_PATH = "plugins/level_templates/";
+    private static int COUNT = 0;
 
     public LevelTemplate(File file) {
         if (!file.exists()) {
@@ -29,9 +30,10 @@ public class LevelTemplate {
     }
 
     public Level install() {
+        String name = file.getName() + "-" + COUNT++;
         try {
             if (type == Type.DIR) {
-                FileUtils.copyDirectory(file, new File(LEVEL_PATH + file.getName()));
+                FileUtils.copyDirectory(file, new File(LEVEL_PATH + name));
             } else if (type == Type.ZIP) {
                 //TODO 解压zip
             }
@@ -39,8 +41,8 @@ public class LevelTemplate {
             MainLogger.getLogger().logException(e);
             return null;
         }
-        if (Server.getInstance().loadLevel(file.getName())) {
-            return Server.getInstance().getLevelByName(file.getName());
+        if (Server.getInstance().loadLevel(name)) {
+            return Server.getInstance().getLevelByName(name);
         }
         return null;
     }
