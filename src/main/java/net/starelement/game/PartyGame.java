@@ -1,6 +1,7 @@
 package net.starelement.game;
 
 import cn.nukkit.Server;
+import cn.nukkit.event.HandlerList;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.Plugin;
@@ -107,6 +108,9 @@ public class PartyGame {
             player.getPlayer().teleport(Server.getInstance().getDefaultLevel().getSpawnLocation());
         }
         Server.getInstance().unloadLevel(level);
+        for (GameListener listener : listeners) {
+            HandlerList.unregisterAll(listener);
+        }
         party.next();
     }
 
