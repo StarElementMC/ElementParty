@@ -106,6 +106,7 @@ public class PartyGame {
         for (PartyPlayer player : players) {
             player.getPlayer().teleport(Server.getInstance().getDefaultLevel().getSpawnLocation());
         }
+        Server.getInstance().unloadLevel(level);
         party.next();
     }
 

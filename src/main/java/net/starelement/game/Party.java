@@ -82,6 +82,13 @@ public class Party {
         game.party = this;
         try {
             for (int i = 0; i < 3; i++) {
+                LevelTemplate template = game.getRandomLevel();
+                Level level = template.install();
+                if (level != null) {
+                    putLevel(game, level);
+                } else {
+                    throw new RuntimeException("Level not installed " + template);
+                }
                 sendMessage("3秒后传送");
                 Thread.sleep(3000);
                 game.join(players);

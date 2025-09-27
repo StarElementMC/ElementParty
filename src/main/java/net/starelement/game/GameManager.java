@@ -45,15 +45,6 @@ public class GameManager {
         }
         ArrayList<PartyGame> gameList = selectGames();
         Party party = new Party(gameList, players);
-        for (PartyGame game : gameList) {
-            LevelTemplate template = game.getRandomLevel();
-            Level level = template.install();
-            if (level != null) {
-                party.putLevel(game, level);
-            } else {
-                throw new RuntimeException("Level not installed " + template);
-            }
-        }
         if (gameList.isEmpty()) return;
 //        if (party.getPlayers().isEmpty()) return;
         ReadyTask ready = new ReadyTask(party);
