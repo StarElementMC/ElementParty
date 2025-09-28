@@ -14,6 +14,7 @@ public class GameManager {
 
     private static GameManager instance = new GameManager();
     private HashMap<String, PartyGame> games = new HashMap<>();
+    private Party party;
 
     public ElementParty plugin;
 
@@ -35,6 +36,10 @@ public class GameManager {
         return plugin;
     }
 
+    public Party getParty() {
+        return party;
+    }
+
     public void startParty() {
 //        if (started) throw new IllegalStateException("Party already started");
         Server server = Server.getInstance();
@@ -44,7 +49,7 @@ public class GameManager {
             players.add(new PartyPlayer(player));
         }
         ArrayList<PartyGame> gameList = selectGames();
-        Party party = new Party(gameList, players);
+        this.party = new Party(gameList, players);
         if (gameList.isEmpty()) return;
 //        if (party.getPlayers().isEmpty()) return;
         ReadyTask ready = new ReadyTask(party);

@@ -120,7 +120,9 @@ public class PartyGame {
         for (PartyPlayer player : players) {
             player.getPlayer().teleport(Server.getInstance().getDefaultLevel().getSpawnLocation());
         }
-        Server.getInstance().unloadLevel(level);
+        if (!Server.getInstance().isLevelLoaded(level.getName())) {
+            level.unload();
+        }
         for (GameListener listener : listeners) {
             HandlerList.unregisterAll(listener);
         }
