@@ -14,6 +14,7 @@ public class PartyGame {
     private Plugin plugin;
     private HashSet<GameListener> listeners = new HashSet<>();
     private HashSet<LevelTemplate> levels = new HashSet<>();
+    private HashSet<Tag> tags = new HashSet<>();
     private Level level;
     private HashSet<PartyPlayer> players;
     protected Party party;
@@ -36,6 +37,18 @@ public class PartyGame {
 
     public void addLevel(LevelTemplate template) {
         levels.add(template);
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
+
+    public boolean hasTag(Tag tag) {
+        return tags.contains(tag);
+    }
+
+    public Collection<Tag> getTags() {
+        return new HashSet<>(tags);
     }
 
     public LevelTemplate getRandomLevel() {
@@ -112,6 +125,17 @@ public class PartyGame {
             HandlerList.unregisterAll(listener);
         }
         party.next();
+    }
+
+    public enum Tag {
+
+        RACING,
+        SURVIVAL,
+        SCORE,
+        TEAM,
+        SOLO,
+        FINAL,
+
     }
 
 }
