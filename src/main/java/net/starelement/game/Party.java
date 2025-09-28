@@ -79,10 +79,11 @@ public class Party {
 
     public synchronized void start() {
         started = true;
-        PartyGame game = nextGame();
-        game.party = this;
         try {
-            for (int i = 0; i < 3; i++) {
+            for (PartyGame game : gameList) {
+                game.party = this;
+                currentGame = game;
+                index++;
                 if (!started) return;
                 LevelTemplate template = game.getRandomLevel();
                 Level level = template.install();
@@ -114,6 +115,9 @@ public class Party {
         notifyAll();
         if (currentGame != null) currentGame.finish();
         GameManager.getInstance().getLogger().info("游戏结束");
+        for (PartyPlayer player : players) {
+            player.teleportRoom();
+        }
     }
 
 }

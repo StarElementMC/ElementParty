@@ -1,6 +1,8 @@
 package net.starelement.game;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
+import cn.nukkit.level.Position;
 
 public class PartyPlayer {
 
@@ -29,6 +31,18 @@ public class PartyPlayer {
 
     public boolean isActive() {
         return active;
+    }
+
+    public void teleport(Position position) {
+        if (isOnline()) {
+            player.teleport(position);
+        }
+    }
+
+    public void teleportRoom() {
+        if (isOnline()) {
+            player.teleport(Server.getInstance().getDefaultLevel().getSpawnLocation());
+        }
     }
 
 }

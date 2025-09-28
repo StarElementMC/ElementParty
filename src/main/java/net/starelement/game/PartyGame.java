@@ -17,10 +17,22 @@ public class PartyGame {
     private HashSet<Tag> tags = new HashSet<>();
     private Level level;
     private HashSet<PartyPlayer> players;
+    private String name;
+    private String displayName;
     protected Party party;
 
     public PartyGame(Plugin plugin) {
         this.plugin = plugin;
+        name = plugin.getName();
+        displayName = plugin.getName();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public void addListener(GameListener listener) {
@@ -28,11 +40,11 @@ public class PartyGame {
     }
 
     public String getName() {
-        return plugin.getName();
+        return name;
     }
 
     public String getDisplayName() {
-        return getName();
+        return displayName;
     }
 
     public void addLevel(LevelTemplate template) {
@@ -117,12 +129,6 @@ public class PartyGame {
 
     public void finish() {
         party.sendTitle("游戏结束", "Finished!");
-        for (PartyPlayer player : players) {
-            player.getPlayer().teleport(Server.getInstance().getDefaultLevel().getSpawnLocation());
-        }
-        if (!Server.getInstance().isLevelLoaded(level.getName())) {
-            level.unload();
-        }
         for (GameListener listener : listeners) {
             HandlerList.unregisterAll(listener);
         }
