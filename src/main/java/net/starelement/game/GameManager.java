@@ -1,8 +1,6 @@
 package net.starelement.game;
 
-import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.level.Level;
 import cn.nukkit.utils.Logger;
 import net.starelement.ElementParty;
 import net.starelement.game.set.PlayerSet;
@@ -49,8 +47,9 @@ public class GameManager {
         this.party = new Party(gameList, new PlayerSet());
         if (gameList.isEmpty()) return;
 //        if (party.getPlayers().isEmpty()) return;
-        ReadyTask ready = new ReadyTask(party);
-        server.getScheduler().scheduleAsyncTask(plugin, ready);
+//        ReadyTask ready = new ReadyTask(party);
+//        server.getScheduler().scheduleAsyncTask(plugin, ready);
+        party.start2();
     }
 
     /**

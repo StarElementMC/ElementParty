@@ -14,6 +14,6 @@ public class ReadyTask extends AsyncTask {
     @Override
     public void onRun() {
         Thread.currentThread().setName("party");
-        party.start();
+        party.start2();
     }
 }

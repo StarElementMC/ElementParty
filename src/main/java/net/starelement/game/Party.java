@@ -1,13 +1,12 @@
 package net.starelement.game;
 
-import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import net.starelement.game.set.PlayerSet;
+import net.starelement.task.GameTask;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Party {
 
@@ -37,6 +36,9 @@ public class Party {
 
     protected PartyGame nextGame() {
         currentGame = gameList.get(index);
+        if (index == gameList.size() - 1) {
+            currentGame.setFinal(true);
+        }
         index++;
         return currentGame;
     }
@@ -48,6 +50,29 @@ public class Party {
     protected void putLevel(PartyGame game, Level level) {
         levels.put(game, level);
         game.setLevel(level);
+    }
+
+    public void start2() {
+        if (currentGame != null && currentGame.isFinal()) {
+            GameManager.getInstance().getLogger().info("结算");
+            finish();
+            return;
+        }
+        PartyGame game = nextGame();
+        game.party = this;
+        currentGame = game;
+        LevelTemplate template = game.getRandomLevel();
+        Level level = template.install();
+        putLevel(game, level);
+        game.join(players);
+        if (level != null) {
+            putLevel(game, level);
+            GameTask gameTask = new GameTask(game);
+            Server.getInstance().getScheduler().scheduleAsyncTask(
+                    GameManager.getInstance().getPlugin(), gameTask);
+        } else {
+            throw new RuntimeException("Level not installed " + template);
+        }
     }
 
     public synchronized void start() {
@@ -79,6 +104,10 @@ public class Party {
         }
     }
 
+    public void next2() {
+        start2();
+    }
+
     public synchronized void next() {
         notifyAll();
     }
@@ -86,7 +115,6 @@ public class Party {
     public synchronized void finish() {
         started = false;
         notifyAll();
-        if (currentGame != null) currentGame.finish();
         GameManager.getInstance().getLogger().info("游戏结束");
         players.teleportRoom();
     }

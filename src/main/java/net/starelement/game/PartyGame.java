@@ -20,6 +20,7 @@ public class PartyGame {
     private PlayerSet players;
     private String name;
     private String displayName;
+    private boolean isFinal = false;
     protected Party party;
 
     public PartyGame(Plugin plugin) {
@@ -95,6 +96,10 @@ public class PartyGame {
         moveToLevel(players);
     }
 
+    public PlayerSet getPlayers() {
+        return players;
+    }
+
     public void start() throws InterruptedException {
         Thread.sleep(5000);
         for (int i = 3; i > 0; i--) {
@@ -116,7 +121,15 @@ public class PartyGame {
         for (GameListener listener : listeners) {
             HandlerList.unregisterAll(listener);
         }
-        party.next();
+        party.next2();
+    }
+
+    public void setFinal(boolean isFinal) {
+        this.isFinal = isFinal;
+    }
+
+    public boolean isFinal() {
+        return isFinal;
     }
 
     public enum Tag {
