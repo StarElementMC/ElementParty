@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.nukkit.utils.Logger;
 import net.starelement.ElementParty;
+import net.starelement.game.set.PlayerSet;
 import net.starelement.task.ReadyTask;
 
 import java.util.ArrayList;
@@ -44,12 +45,8 @@ public class GameManager {
 //        if (started) throw new IllegalStateException("Party already started");
         Server server = Server.getInstance();
         server.getLogger().info("Start");
-        ArrayList<PartyPlayer> players = new ArrayList<>();
-        for (Player player : server.getOnlinePlayers().values()) {
-            players.add(new PartyPlayer(player));
-        }
         ArrayList<PartyGame> gameList = selectGames();
-        this.party = new Party(gameList, players);
+        this.party = new Party(gameList, new PlayerSet());
         if (gameList.isEmpty()) return;
 //        if (party.getPlayers().isEmpty()) return;
         ReadyTask ready = new ReadyTask(party);

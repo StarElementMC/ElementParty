@@ -2,6 +2,7 @@ package net.starelement.game;
 
 import cn.nukkit.Player;
 import cn.nukkit.level.Level;
+import net.starelement.game.set.PlayerSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,51 +12,23 @@ import java.util.HashSet;
 public class Party {
 
     private PartyGame currentGame;
-    private HashSet<PartyPlayer> players = new HashSet<>();
+    private PlayerSet players;
     private boolean started = false;
     private ArrayList<PartyGame> gameList;
     private int index = 0;
     private HashMap<PartyGame, Level> levels = new HashMap<>();
 
-    protected Party(ArrayList<PartyGame> gameList, ArrayList<PartyPlayer> players) {
+    protected Party(ArrayList<PartyGame> gameList, PlayerSet players) {
         this.gameList = gameList;
-        this.players.addAll(players);
+        this.players = players;
     }
 
     public PartyGame getCurrentGame() {
         return currentGame;
     }
 
-    public Collection<PartyPlayer> getPlayers() {
+    public PlayerSet getPlayers() {
         return players;
-    }
-
-    public void sendMessage(String message) {
-        for (PartyPlayer player : players) {
-            player.getPlayer().sendMessage(message);
-        }
-    }
-
-    public void sendTitle(String title, String subtitle) {
-        for (PartyPlayer player : players) {
-            player.getPlayer().sendTitle(title, subtitle);
-            player.getPlayer().sendActionBar(subtitle);
-        }
-    }
-
-    public void sendActionBar(String message) {
-        for (PartyPlayer player : players) {
-            player.getPlayer().sendActionBar(message);
-        }
-    }
-
-    public PartyPlayer getPlayer(Player player) {
-        for (PartyPlayer partyPlayer : players) {
-            if (partyPlayer.getPlayer() == player) {
-                return partyPlayer;
-            }
-        }
-        return null;
     }
 
     public ArrayList<PartyGame> getGameList() {
@@ -92,7 +65,7 @@ public class Party {
                 } else {
                     throw new RuntimeException("Level not installed " + template);
                 }
-                sendMessage("3秒后传送");
+                players.sendMessage("3秒后传送");
                 Thread.sleep(3000);
                 game.join(players);
                 game.start();
@@ -115,9 +88,7 @@ public class Party {
         notifyAll();
         if (currentGame != null) currentGame.finish();
         GameManager.getInstance().getLogger().info("游戏结束");
-        for (PartyPlayer player : players) {
-            player.teleportRoom();
-        }
+        players.teleportRoom();
     }
 
 }
