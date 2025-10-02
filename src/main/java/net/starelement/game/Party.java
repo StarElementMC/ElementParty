@@ -64,6 +64,7 @@ public class Party {
         LevelTemplate template = game.getRandomLevel();
         Level level = template.install();
         putLevel(game, level);
+        game.setConfig(template.config);
         game.join(players);
         if (level != null) {
             putLevel(game, level);

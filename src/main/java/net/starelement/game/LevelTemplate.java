@@ -2,6 +2,7 @@ package net.starelement.game;
 
 import cn.nukkit.Server;
 import cn.nukkit.level.Level;
+import cn.nukkit.utils.Config;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.Utils;
 import org.apache.commons.io.FileUtils;
@@ -13,6 +14,7 @@ public class LevelTemplate {
 
     private File file;
     private Type type;
+    protected Config config;
     public static final String LEVEL_PATH = "worlds/";
     public static final String TEMPLATE_PATH = "plugins/level_templates/";
     private static int COUNT = 0;
@@ -34,6 +36,7 @@ public class LevelTemplate {
         try {
             if (type == Type.DIR) {
                 FileUtils.copyDirectory(file, new File(LEVEL_PATH + name));
+                this.config = new Config(new File(LEVEL_PATH + name + "/metadata.yml"));
             } else if (type == Type.ZIP) {
                 //TODO 解压zip
             }

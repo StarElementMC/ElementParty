@@ -5,6 +5,7 @@ import cn.nukkit.event.HandlerList;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.Plugin;
+import cn.nukkit.utils.Config;
 import net.starelement.game.set.PlayerSet;
 
 import java.util.Collection;
@@ -21,6 +22,7 @@ public class PartyGame {
     private String name;
     private String displayName;
     private boolean isFinal = false;
+    private Config config;
     protected Party party;
 
     public PartyGame(Plugin plugin) {
@@ -75,6 +77,10 @@ public class PartyGame {
 
     protected void setLevel(Level level) {
         this.level = level;
+    }
+
+    protected void setConfig(Config config) {
+        this.config = config;
     }
 
     public Level getLevel() {
